@@ -9,7 +9,6 @@ public class BinarySearchTree<E extends Comparable<E>> {
         this.root = null;
     }
 
-    // Inserción
     public void insert(E data) {
         root = insertRec(root, data);
     }

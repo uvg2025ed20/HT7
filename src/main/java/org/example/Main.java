@@ -7,9 +7,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         BinarySearchTree<Product> bst = new BinarySearchTree<>();
-        String csvFile = "src/main/java/org/example/home appliance skus lowes.csv"; // Cambia esto por la ruta real
+        String csvFile = "src/main/java/org/example/home appliance skus lowes.csv";
 
-        // Cargar datos del CSV
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line;
             br.readLine();
@@ -39,26 +38,47 @@ public class Main {
             e.printStackTrace();
         }
 
-        // Interacción con el usuario
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Ingrese SKU a buscar:");
-        String sku = scanner.nextLine();
-        Product found = bst.search(sku);
-        if (found != null) {
-            System.out.println("Producto encontrado: " + found);
-        } else {
-            System.out.println("Producto no encontrado.");
-        }
+        while (true) {
+            System.out.println("\nMenú:");
+            System.out.println("1. Buscar producto por SKU");
+            System.out.println("2. Listar productos por precio ascendente");
+            System.out.println("3. Listar productos por precio descendente");
+            System.out.println("4. Salir");
+            System.out.print("Seleccione una opción: ");
+            int option = scanner.nextInt();
+            scanner.nextLine(); // Consumir el salto de línea
 
-        // Listar productos ordenados
-        System.out.println("\nProductos ordenados por precio ascendente:");
-        for (Product p : bst.inOrderAsc()) {
-            System.out.println(p);
-        }
-
-        System.out.println("\nProductos ordenados por precio descendente:");
-        for (Product p : bst.inOrderDesc()) {
-            System.out.println(p);
+            switch (option) {
+                case 1:
+                    System.out.print("Ingrese SKU a buscar: ");
+                    String sku = scanner.nextLine();
+                    Product found = bst.search(sku);
+                    if (found != null) {
+                        System.out.println("Producto encontrado: " + found);
+                    } else {
+                        System.out.println("Producto no encontrado.");
+                    }
+                    break;
+                case 2:
+                    System.out.println("\nProductos ordenados por precio ascendente:");
+                    for (Product p : bst.inOrderAsc()) {
+                        System.out.println(p);
+                    }
+                    break;
+                case 3:
+                    System.out.println("\nProductos ordenados por precio descendente:");
+                    for (Product p : bst.inOrderDesc()) {
+                        System.out.println(p);
+                    }
+                    break;
+                case 4:
+                    System.out.println("Saliendo...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Opción no válida. Intente de nuevo.");
+            }
         }
     }
 }
