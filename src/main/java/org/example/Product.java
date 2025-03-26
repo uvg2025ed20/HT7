@@ -22,6 +22,7 @@ public class Product implements Comparable<Product> {
     public String getProductName() { return productName; }
     public String getCategory() { return category; }
 
+    // Implementación de Comparable para ordenar por SKU
     @Override
     public int compareTo(Product other) {
         return this.sku.compareTo(other.sku);

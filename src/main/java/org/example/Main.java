@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        BinarySearchTree<Product> bst = new BinarySearchTree<>();
+        BST bst = new BST();
         String csvFile = "src/main/java/org/example/home appliance skus lowes.csv";
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
@@ -32,6 +32,8 @@ public class Main {
                     bst.insert(product);
                 } catch (NumberFormatException e) {
                     System.err.println("Error en línea " + lineNumber + ": precio inválido en " + line);
+                } catch (Exception e) {
+                    System.err.println("Error en línea " + lineNumber + ": " + e.getMessage());
                 }
             }
         } catch (Exception e) {
@@ -39,23 +41,24 @@ public class Main {
         }
 
         Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.println("\nMenú:");
+        int option;
+        do {
+            System.out.println("\nMenú de opciones:");
             System.out.println("1. Buscar producto por SKU");
-            System.out.println("2. Listar productos por precio ascendente");
-            System.out.println("3. Listar productos por precio descendente");
+            System.out.println("2. Mostrar productos ordenados por precio ascendente");
+            System.out.println("3. Mostrar productos ordenados por precio descendente");
             System.out.println("4. Salir");
             System.out.print("Seleccione una opción: ");
-            int option = scanner.nextInt();
-            scanner.nextLine(); // Consumir el salto de línea
+            option = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
 
             switch (option) {
                 case 1:
                     System.out.print("Ingrese SKU a buscar: ");
                     String sku = scanner.nextLine();
-                    Product found = bst.search(sku);
-                    if (found != null) {
-                        System.out.println("Producto encontrado: " + found);
+                    Node foundNode = bst.search(sku);
+                    if (foundNode != null) {
+                        System.out.println("Producto encontrado: " + foundNode.product);
                     } else {
                         System.out.println("Producto no encontrado.");
                     }
@@ -74,11 +77,12 @@ public class Main {
                     break;
                 case 4:
                     System.out.println("Saliendo...");
-                    scanner.close();
-                    return;
+                    break;
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
             }
-        }
+        } while (option != 4);
+
+        scanner.close();
     }
 }
